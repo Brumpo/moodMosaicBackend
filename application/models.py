@@ -52,6 +52,6 @@ class Dates(db.Model):
             'journal' : self.journal,
         }
     @staticmethod
-    def get_user_journal_on_date(userId, startDate, endDate):
-        data = Dates.query.filter(db.Dates.userId==userId, db.Dates.date>=startDate , db.Dates.date<= endDate)
+    def get_user_journal_on_date(userId, startDate, endDate, year):
+        data = Dates.query.filter(Dates.userId==userId, Dates.year==year, Dates.day >= startDate , Dates.day <= endDate).all()
         return data

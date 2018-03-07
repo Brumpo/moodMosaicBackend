@@ -10,13 +10,19 @@ from flask_cors import CORS
 def index():
     return request.query_string
 
-@app.route('/api/dates',methods=['GET'])
+@app.route('/api/dates/',methods=['GET'])
 def get_date_by_frame():
     queryParams = request.query_string.split('=')
-    userId = queryParams[2].split('&')[0]
+    print(queryParams)
+    userId = queryParams[1].split('&')[0]
+    year = queryParams[2].split('&')[0]
     startDate = queryParams[3].split('&')[0]
-    endDate = queryParams[4].split('&')[0]
-    Dates.get_user_journal_on_date(userId=userId, startDate=startDate, endDate=endDate)
+    endDate = queryParams[4]
+    results = Dates.get_user_journal_on_date(userId=userId, year=year, startDate=startDate, endDate=endDate)
+    data = []
+    for result in results:
+        data.append(Dates.serialize(result))
+    return jsonify({'data': data})
 
 @app.route('/api/create_date', methods=['POST'])
 def create_date():
@@ -80,7 +86,10 @@ def get_token():
     incoming = request.get_json()
     user = Users.get_user_with_email_and_password(incoming["email"], incoming["password"])
     if user:
-        return jsonify(token=generate_token(user))
+        return jsonify(
+            id=user.id,
+            token=generate_token(user)
+        )
 
     return jsonify(error=True), 403
 
