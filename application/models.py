@@ -28,6 +28,20 @@ class Users(db.Model):
         self.key6 = key6
         self.password = Users.hashed_password(password)
 
+    def serialize(self):
+        return{
+            'email' : self.email,
+            'fname' : self.fname,
+            'lname' : self.lname,
+            'key1' : self.key1,
+            'key2' : self.key2,
+            'key3' : self.key3,
+            'key4' : self.key4,
+            'key5' : self.key5,
+            'key6' : self.key6,
+            'password' : self.password
+        }
+
     @staticmethod
     def hashed_password(password):
         return bcrypt.generate_password_hash(password).decode("utf-8")
@@ -39,6 +53,11 @@ class Users(db.Model):
             return user
         else:
             return None
+
+    @staticmethod
+    def get_current_AaG(userId):
+        AaG = Users.query.filter(Users.id==userId).first()
+        return AaG
 
 class Dates(db.Model):
     __tablename__ = 'dates'
@@ -82,6 +101,7 @@ class Dates(db.Model):
             'summary' : self.summary,
             'journal' : self.journal,
         }
+
     @staticmethod
     def get_user_journal_on_date(userId, startDate, endDate, year):
         data = Dates.query.filter(Dates.userId==userId, Dates.year==year, Dates.day >= startDate , Dates.day <= endDate).all()

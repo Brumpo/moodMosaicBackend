@@ -30,7 +30,13 @@ def create_date():
         userId=incoming["userId"],
         day=incoming["day"],
         year=incoming["year"],
-        atAGlance=incoming["atAGlance"],
+        x1 = incoming["x1"],
+        x2 = incoming["x2"],
+        x3 = incoming["x3"],
+        x4 = incoming["x4"],
+        x5 = incoming["x5"],
+        x6 = incoming["x6"],
+        summary=incoming["summary"],
         journal=incoming["journal"]
     )
     db.session.add(date)
@@ -39,21 +45,15 @@ def create_date():
 
 @app.route('/api/test/', methods=['GET'])
 def get_dates():
-    print('test')
-    a,b,c,d = request.query_string.split('=')
-    userId = b.split('&')[0]
-    atAGlance = c.split('&')[0]
-    journal = d.split('&')[0]
-    date = Dates(userId=userId,atAGlance=atAGlance,journal=journal)
-    db.session.add(date)
-    db.session.commit()
-    return jsonify({'data': Dates.serialize(date)})
+    return('test')
 
-@app.route("/api/user", methods=["GET"])
+@app.route("/api/user/", methods=["GET"])
 @requires_auth
 def get_user():
-    return jsonify(result=g.current_user)
-
+    a,b = request.query_string.split('=')
+    userId = b.split('&')[0]
+    user = Users.get_current_AaG(userId)
+    return jsonify({'data': Users.serialize(user)})
 
 
 @app.route("/api/create_user", methods=["POST"])
