@@ -13,7 +13,6 @@ def index():
 @app.route('/api/dates/',methods=['GET'])
 def get_date_by_frame():
     queryParams = request.query_string.split('=')
-    print(queryParams)
     userId = queryParams[1].split('&')[0]
     year = queryParams[2].split('&')[0]
     startDate = queryParams[3].split('&')[0]

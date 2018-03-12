@@ -8,11 +8,24 @@ class Users(db.Model):
     password = db.Column(db.String(255))
     fname = db.Column(db.String(255))
     lname = db.Column(db.String(255))
-    def __init__(self, email, password, fname, lname):
+    key1 = db.Column(db.String(255))
+    key2 = db.Column(db.String(255))
+    key3 = db.Column(db.String(255))
+    key4 = db.Column(db.String(255))
+    key5 = db.Column(db.String(255))
+    key6 = db.Column(db.String(255))
+
+    def __init__(self, email, password, fname, lname, key1, key2, key3, key4, key5, key6):
         self.email = email
         self.active = True
         self.fname = fname
         self.lname = lname
+        self.key1 = key1
+        self.key2 = key2
+        self.key3 = key3
+        self.key4 = key4
+        self.key5 = key5
+        self.key6 = key6
         self.password = Users.hashed_password(password)
 
     @staticmethod
@@ -33,14 +46,26 @@ class Dates(db.Model):
     day = db.Column(db.Integer(), nullable=False)
     year = db.Column(db.Integer(), nullable=False)
     userId = db.Column(db.Integer(), nullable=False)
-    atAGlance = db.Column(db.VARCHAR(3000))
+    x1 = db.Column(db.VARCHAR(3000))
+    x2 = db.Column(db.VARCHAR(3000))
+    x3 = db.Column(db.VARCHAR(3000))
+    x4 = db.Column(db.VARCHAR(3000))
+    x5 = db.Column(db.VARCHAR(3000))
+    x6 = db.Column(db.VARCHAR(3000))
+    summary = db.Column(db.VARCHAR(3000))
     journal = db.Column(db.VARCHAR(3000))
 
-    def __init__(self,userId,day,year,atAGlance,journal):
+    def __init__(self,userId,day,year,x1,x2,x3,x4,x5,x6,summary,journal):
         self.day = day
         self.year = year
         self.userId = userId
-        self.atAGlance = atAGlance
+        self.x1 = x1
+        self.x2 = x2
+        self.x3 = x3
+        self.x4 = x4
+        self.x5 = x5
+        self.x6 = x6
+        self.summary = summary
         self.journal = journal
 
     def serialize(self):
@@ -48,7 +73,13 @@ class Dates(db.Model):
             'day' : self.day,
             'year' : self.year,
             'userId' : self.userId,
-            'atAGlance' : self.atAGlance,
+            'x1' : self.x1,
+            'x2' : self.x2,
+            'x3' : self.x3,
+            'x4' : self.x4,
+            'x5' : self.x5,
+            'x6' : self.x6,
+            'summary' : self.summary,
             'journal' : self.journal,
         }
     @staticmethod

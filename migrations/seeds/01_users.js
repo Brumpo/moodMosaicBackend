@@ -7,7 +7,13 @@ exports.seed = function(knex, Promise) {
     fname: 'sao',
     lname: 'sao',
     email: 'sao',
-    password: '$2b$12$D.UkGKlBy72ZqNz853./1e4bZTsCl/bfNmS8zahoeUEoxPpYvVwHa'
+    password: '$2b$12$D.UkGKlBy72ZqNz853./1e4bZTsCl/bfNmS8zahoeUEoxPpYvVwHa',
+    key1: 'feeling',
+    key2: 'love',
+    key3: 'religion',
+    key4: 'preaching',
+    key5: 'swearing',
+    key6: 'flavor flute'
     },{
     id: 2,
     fname: 'Brent',
