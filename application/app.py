@@ -55,6 +55,30 @@ def get_user():
     user = Users.get_current_AaG(userId)
     return jsonify({'data': Users.serialize(user)})
 
+@app.route("/api/user/aag", methods=["PUT", "PATCH"])
+def update_AaG():
+    print('hello')
+    incoming = request.get_json()
+    user = {
+        "key1" : incoming["key1"],
+        "key2" : incoming["key2"],
+        "key3" : incoming["key3"],
+        "key4" : incoming["key4"],
+        "key5" : incoming["key5"]
+    }
+    AaG = Users.updateAaG(
+        userId=incoming["userId"],
+        key1=incoming["key1"],
+        key2=incoming["key2"],
+        key3=incoming["key3"],
+        key4=incoming["key4"],
+        key5=incoming["key5"],
+        key6=incoming["key6"]
+        )
+    print AaG
+    db.session.commit()
+    return jsonify({'data': user})
+
 
 @app.route("/api/create_user", methods=["POST"])
 def create_user():

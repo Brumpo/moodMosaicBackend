@@ -1,5 +1,7 @@
 from index import db, bcrypt
 from datetime import datetime
+from sqlalchemy import update
+
 
 class Users(db.Model):
     __tablename__ = 'users'
@@ -15,7 +17,7 @@ class Users(db.Model):
     key5 = db.Column(db.String(255))
     key6 = db.Column(db.String(255))
 
-    def __init__(self, email, password, fname, lname, key1, key2, key3, key4, key5, key6):
+    def __init__(self, email, password, fname, lname, key1='Anxiety', key2='Irritability', key3='Mood', key4='Sleep', key5='Diet', key6='Professional'):
         self.email = email
         self.active = True
         self.fname = fname
@@ -55,7 +57,20 @@ class Users(db.Model):
             return None
 
     @staticmethod
-    def get_current_AaG(userId):
+    def updateAaG(userId, key1, key2, key3, key4, key5, key6):
+        user = Users.query.filter(Users.id==userId).first()
+        user.key1 = key1
+        user.key2 = key2
+        user.key3 = key3
+        user.key4 = key4
+        user.key5 = key5
+        user.key6 = key6
+        #update(Users).where(Users.id==userId).values(key1=key1,key2=key2,key3=key3,key4=key4,key5=key5)
+        #return AaG
+        return user
+
+    @staticmethod
+    def get_current_AaG(userId) :
         AaG = Users.query.filter(Users.id==userId).first()
         return AaG
 
