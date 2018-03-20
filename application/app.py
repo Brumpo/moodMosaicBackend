@@ -64,7 +64,8 @@ def update_AaG():
         "key2" : incoming["key2"],
         "key3" : incoming["key3"],
         "key4" : incoming["key4"],
-        "key5" : incoming["key5"]
+        "key5" : incoming["key5"],
+        "key6" : incoming["key6"]
     }
     AaG = Users.updateAaG(
         userId=incoming["userId"],

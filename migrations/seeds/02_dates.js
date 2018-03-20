@@ -5676,7 +5676,7 @@ exports.seed = function(knex, Promise) {
       x1: 'Hapiness,1',
       x2: 'Anxiety,3',
       x3: 'Irritability,2',
-      x4: 'Diet7',
+      x4: 'Diet,7',
       x5: 'Sleep,8 hours',
       x6: 'Daily Meditation,getting into that new habit',
       summary:'rabbit hole spulunking',
