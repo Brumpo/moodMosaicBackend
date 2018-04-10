@@ -10,13 +10,18 @@ from flask_cors import CORS
 def index():
     return request.query_string
 
-@app.route('/api/dates',methods=['GET'])
+@app.route('/api/dates/',methods=['GET'])
 def get_date_by_frame():
     queryParams = request.query_string.split('=')
-    userId = queryParams[2].split('&')[0]
+    userId = queryParams[1].split('&')[0]
+    year = queryParams[2].split('&')[0]
     startDate = queryParams[3].split('&')[0]
-    endDate = queryParams[4].split('&')[0]
-    Dates.get_user_journal_on_date(userId=userId, startDate=startDate, endDate=endDate)
+    endDate = queryParams[4]
+    results = Dates.get_user_journal_on_date(userId=userId, year=year, startDate=startDate, endDate=endDate)
+    data = []
+    for result in results:
+        data.append(Dates.serialize(result))
+    return jsonify({'data': data})
 
 @app.route('/api/create_date', methods=['POST'])
 def create_date():
@@ -25,7 +30,13 @@ def create_date():
         userId=incoming["userId"],
         day=incoming["day"],
         year=incoming["year"],
-        atAGlance=incoming["atAGlance"],
+        x1 = incoming["x1"],
+        x2 = incoming["x2"],
+        x3 = incoming["x3"],
+        x4 = incoming["x4"],
+        x5 = incoming["x5"],
+        x6 = incoming["x6"],
+        summary=incoming["summary"],
         journal=incoming["journal"]
     )
     db.session.add(date)
@@ -34,21 +45,40 @@ def create_date():
 
 @app.route('/api/test/', methods=['GET'])
 def get_dates():
-    print('test')
-    a,b,c,d = request.query_string.split('=')
-    userId = b.split('&')[0]
-    atAGlance = c.split('&')[0]
-    journal = d.split('&')[0]
-    date = Dates(userId=userId,atAGlance=atAGlance,journal=journal)
-    db.session.add(date)
-    db.session.commit()
-    return jsonify({'data': Dates.serialize(date)})
+    return('test')
 
-@app.route("/api/user", methods=["GET"])
+@app.route("/api/user/", methods=["GET"])
 @requires_auth
 def get_user():
-    return jsonify(result=g.current_user)
+    a,b = request.query_string.split('=')
+    userId = b.split('&')[0]
+    user = Users.get_current_AaG(userId)
+    return jsonify({'data': Users.serialize(user)})
 
+@app.route("/api/user/aag", methods=["PUT", "PATCH"])
+def update_AaG():
+    print('hello')
+    incoming = request.get_json()
+    user = {
+        "key1" : incoming["key1"],
+        "key2" : incoming["key2"],
+        "key3" : incoming["key3"],
+        "key4" : incoming["key4"],
+        "key5" : incoming["key5"],
+        "key6" : incoming["key6"]
+    }
+    AaG = Users.updateAaG(
+        userId=incoming["userId"],
+        key1=incoming["key1"],
+        key2=incoming["key2"],
+        key3=incoming["key3"],
+        key4=incoming["key4"],
+        key5=incoming["key5"],
+        key6=incoming["key6"]
+        )
+    print AaG
+    db.session.commit()
+    return jsonify({'data': user})
 
 
 @app.route("/api/create_user", methods=["POST"])
@@ -80,7 +110,10 @@ def get_token():
     incoming = request.get_json()
     user = Users.get_user_with_email_and_password(incoming["email"], incoming["password"])
     if user:
-        return jsonify(token=generate_token(user))
+        return jsonify(
+            id=user.id,
+            token=generate_token(user)
+        )
 
     return jsonify(error=True), 403
 
